@@ -27,7 +27,7 @@ class Candlesticks extends StatefulWidget {
   final Future<void> Function()? onLoadMoreCandles;
 
   /// List of buttons you what to add on top tool bar
-  final List<ToolBarAction> actions;
+  final List<Widget> actions;
 
   /// List of indicators to draw
   final List<Indicator>? indicators;
