@@ -119,7 +119,7 @@ class _TimeRowState extends State<TimeRow> {
                 children: [
                   Expanded(
                     child: Container(
-                      width: 0.05,
+                      width: 0.2,
                       color: widget.style.borderColor,
                     ),
                   ),
