@@ -72,9 +72,9 @@ class _CandlesticksState extends State<Candlesticks> {
   double lastX = 0;
   int lastIndex = -10;
 
-  /// candleWidth controls the width of the single candles.
-  ///  range: [2...10]
-  double candleWidth = 6;
+  final double maxCandleWidth = 16;
+  final double minCandleWidth = 2;
+  double candleWidth = 10;
 
   /// true when widget.onLoadMoreCandles is fetching new candles.
   bool isCallingLoadMore = false;
@@ -140,8 +140,8 @@ class _CandlesticksState extends State<Candlesticks> {
                 ToolBarAction(
                   onPressed: () {
                     setState(() {
-                      candleWidth -= 2;
-                      candleWidth = max(candleWidth, 2);
+                      candleWidth -= 1;
+                      candleWidth = max(candleWidth, minCandleWidth);
                     });
                   },
                   child: Icon(
@@ -152,8 +152,8 @@ class _CandlesticksState extends State<Candlesticks> {
                 ToolBarAction(
                   onPressed: () {
                     setState(() {
-                      candleWidth += 2;
-                      candleWidth = min(candleWidth, 20);
+                      candleWidth += 1;
+                      candleWidth = min(candleWidth, maxCandleWidth);
                     });
                   },
                   child: Icon(
