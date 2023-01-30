@@ -13,7 +13,9 @@ import 'package:candlesticks/src/widgets/volume_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../models/candle.dart';
+import '../models/tradinglog.dart';
 import 'dash_line.dart';
+import 'mainwindow_tradinglog_widget.dart';
 
 /// This widget manages gestures
 /// Calculates the highest and lowest price of visible candles.
@@ -227,6 +229,16 @@ class _DesktopChartState extends State<DesktopChart> {
                                                   indicatorDatas: widget
                                                       .mainWidnowDataContainer
                                                       .indicatorComponentData,
+                                                  index: widget.index,
+                                                  candleWidth:
+                                                      widget.candleWidth,
+                                                  low: low,
+                                                  high: high,
+                                                ),
+                                                MainWindowTradingLogWidget(
+                                                  tradingLogs: widget
+                                                      .mainWidnowDataContainer.tradingLogs,
+                                                  candles: widget.candles,
                                                   index: widget.index,
                                                   candleWidth:
                                                       widget.candleWidth,

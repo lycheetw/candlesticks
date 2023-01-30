@@ -32,6 +32,9 @@ class Candlesticks extends StatefulWidget {
   /// List of indicators to draw
   final List<Indicator>? indicators;
 
+  /// List of trading logs to draw
+  final List<TradingLog>? tradingLogs;
+
   /// This callback calls when ever user clicks a spcesific indicator close button (X)
   final void Function(String)? onRemoveIndicator;
 
@@ -55,6 +58,7 @@ class Candlesticks extends StatefulWidget {
     this.displayZoomActions = true,
     this.loadingWidget,
     this.indicators,
+    this.tradingLogs,
     this.onRemoveIndicator,
     this.style,
   })  : assert(candles.length == 0 || candles.length > 1,
@@ -89,7 +93,7 @@ class _CandlesticksState extends State<Candlesticks> {
     }
     if (mainWidnowDataContainer == null) {
       mainWidnowDataContainer =
-          MainWidnowDataContainer(widget.indicators ?? [], widget.candles);
+          MainWidnowDataContainer(widget.indicators ?? [], widget.tradingLogs ?? [], widget.candles);
     }
   }
 
@@ -101,7 +105,7 @@ class _CandlesticksState extends State<Candlesticks> {
     }
     if (mainWidnowDataContainer == null) {
       mainWidnowDataContainer =
-          MainWidnowDataContainer(widget.indicators ?? [], widget.candles);
+          MainWidnowDataContainer(widget.indicators ?? [], widget.tradingLogs ?? [], widget.candles);
     } else {
       final currentIndicators = widget.indicators ?? [];
       final oldIndicators = oldWidget.indicators ?? [];
@@ -111,13 +115,13 @@ class _CandlesticksState extends State<Candlesticks> {
             continue;
           } else {
             mainWidnowDataContainer = MainWidnowDataContainer(
-                widget.indicators ?? [], widget.candles);
+                widget.indicators ?? [], widget.tradingLogs ?? [], widget.candles);
             return;
           }
         }
       } else {
         mainWidnowDataContainer =
-            MainWidnowDataContainer(widget.indicators ?? [], widget.candles);
+            MainWidnowDataContainer(widget.indicators ?? [], widget.tradingLogs ?? [], widget.candles);
         return;
       }
       mainWidnowDataContainer!.tickUpdate(widget.candles);

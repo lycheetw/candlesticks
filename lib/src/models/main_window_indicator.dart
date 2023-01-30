@@ -1,4 +1,5 @@
 import 'package:candlesticks/src/models/indicator.dart';
+import 'package:candlesticks/src/models/tradinglog.dart';
 import 'dart:math' as math;
 import 'candle.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class IndicatorComponentData {
 class MainWidnowDataContainer {
   List<IndicatorComponentData> indicatorComponentData = [];
   List<Indicator> indicators;
+  List<TradingLog> tradingLogs;
   List<double> highs = [];
   List<double> lows = [];
   List<String> unvisibleIndicators = [];
@@ -39,7 +41,7 @@ class MainWidnowDataContainer {
     }
   }
 
-  MainWidnowDataContainer(this.indicators, List<Candle> candles) {
+  MainWidnowDataContainer(this.indicators, this.tradingLogs, List<Candle> candles) {
     endDate = candles[0].date;
     beginDate = candles.last.date;
     indicators.forEach((indicator) {
