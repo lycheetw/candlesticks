@@ -235,16 +235,6 @@ class _DesktopChartState extends State<DesktopChart> {
                                                   low: low,
                                                   high: high,
                                                 ),
-                                                MainWindowTradingLogWidget(
-                                                  tradingLogs: widget
-                                                      .mainWidnowDataContainer.tradingLogs,
-                                                  candles: widget.candles,
-                                                  index: widget.index,
-                                                  candleWidth:
-                                                      widget.candleWidth,
-                                                  low: low,
-                                                  high: high,
-                                                ),
                                                 CandleStickWidget(
                                                   candles: widget.candles,
                                                   candleWidth:
@@ -256,6 +246,16 @@ class _DesktopChartState extends State<DesktopChart> {
                                                       widget.style.primaryBear,
                                                   bullColor:
                                                       widget.style.primaryBull,
+                                                ),
+                                                MainWindowTradingLogWidget(
+                                                  tradingLogs: widget
+                                                      .mainWidnowDataContainer.tradingLogs,
+                                                  candles: widget.candles,
+                                                  index: widget.index,
+                                                  candleWidth:
+                                                  widget.candleWidth,
+                                                  low: low,
+                                                  high: high,
                                                 ),
                                               ],
                                             ),

@@ -144,6 +144,20 @@ class MainWindowTradingLogRenderObject extends RenderBox {
               Paint()
                 ..color = Colors.white
                 ..style = PaintingStyle.fill);
+        } else {
+          Path path2 = Path()
+            ..moveTo(closeX, closeY)
+            ..lineTo(closeX - 5, closeY + 8.66)
+            ..lineTo(closeX + 5, closeY + 8.66)
+            ..moveTo(openX, openY)
+            ..lineTo(openX - 5, openY - 8.66)
+            ..lineTo(openX + 5, openY - 8.66);
+
+          context.canvas.drawPath(
+              path2,
+              Paint()
+                ..color = Colors.white
+                ..style = PaintingStyle.fill);
         }
 
 
