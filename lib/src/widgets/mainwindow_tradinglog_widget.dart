@@ -36,7 +36,7 @@ class MainWindowTradingLogWidget extends LeafRenderObjectWidget {
   void updateRenderObject(
       BuildContext context, covariant RenderObject renderObject) {
     MainWindowTradingLogRenderObject candlestickRenderObject =
-    renderObject as MainWindowTradingLogRenderObject;
+        renderObject as MainWindowTradingLogRenderObject;
 
     candlestickRenderObject._tradingLogs = tradingLogs;
     candlestickRenderObject._candles = candles;
@@ -58,12 +58,12 @@ class MainWindowTradingLogRenderObject extends RenderBox {
   late double _high;
 
   MainWindowTradingLogRenderObject(
-      List<TradingLog> tradingLogs,
-      int index,
-      double candleWidth,
-      double low,
-      double high,
-      ) {
+    List<TradingLog> tradingLogs,
+    int index,
+    double candleWidth,
+    double low,
+    double high,
+  ) {
     _tradingLogs = tradingLogs;
     _index = index;
     _candleWidth = candleWidth;
@@ -79,65 +79,80 @@ class MainWindowTradingLogRenderObject extends RenderBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-
-
     double range = (_high - _low) / size.height;
     _tradingLogs.forEach((element) {
-
-
       double? openX;
       double? openY;
       double? closeX;
       double? closeY;
-      for (int i = 0; (i + 1) * _candleWidth < size.width; i++) {
+      for (int i = -_index; (i + 1) < _candles.length; i++) {
         if (i + _index >= _candles.length || i + _index < 0) continue;
         var candle = _candles[i + _index];
-        if(candle.date.compareTo(element.closeTime) <= 0 && closeX == null) {
+        if (candle.date.compareTo(element.closeTime) <= 0 && closeX == null) {
           closeX = size.width + offset.dx - (i + 0.5) * _candleWidth;
           closeY = offset.dy + (_high - element.closePrice) / range;
-        } else if (candle.date.compareTo(element.openTime) <= 0 && openX == null) {
+        } else if (candle.date.compareTo(element.openTime) <= 0 &&
+            openX == null) {
           openX = size.width + offset.dx - (i + 0.5) * _candleWidth;
           openY = offset.dy + (_high - element.openPrice) / range;
           break;
         }
-
       }
 
       Color color;
-      if(element.isLong) {
-        if(element.closePrice > element.openPrice) {
+      if (element.isLong) {
+        if (element.closePrice > element.openPrice) {
           color = Colors.green;
         } else {
           color = Colors.red;
         }
       } else {
-        if(element.closePrice < element.openPrice) {
+        if (element.closePrice < element.openPrice) {
           color = Colors.green;
         } else {
           color = Colors.red;
         }
       }
 
-      if (openX != null && closeX != null) {
-        Path path = Path()
-          ..moveTo(closeX, closeY!)
-          ..lineTo(openX, openY!);
+      if (openX != null && closeX != null && openY != null && closeY != null) {
+        //畫線
+        Path path = Path();
+        if (closeX < size.width && openX < size.width) {
+          path
+            ..moveTo(closeX, closeY)
+            ..lineTo(openX, openY);
+        } else if (closeX >= size.width && openX < size.width) {
+          var m = (closeY - openY) / (closeX - openX);
+          var b = openY - m * openX;
+          var _y = m * size.width + b;
+          path
+            ..moveTo(size.width, _y)
+            ..lineTo(openX, openY);
+        }
 
         context.canvas.drawPath(
             path,
             Paint()
               ..color = color
-              ..strokeWidth = 1
+              ..strokeWidth = 2
               ..style = PaintingStyle.stroke);
 
-        if(element.isLong) {
-          Path path2 = Path()
-            ..moveTo(closeX, closeY)
-            ..lineTo(closeX - 5, closeY - 8.66)
-            ..lineTo(closeX + 5, closeY - 8.66)
-            ..moveTo(openX, openY)
-            ..lineTo(openX - 5, openY + 8.66)
-            ..lineTo(openX + 5, openY + 8.66);
+        //畫三角形
+        if (element.isLong) {
+          Path path2 = Path();
+          if (closeX < size.width) {
+            path2
+              ..moveTo(closeX, closeY)
+              ..lineTo(closeX - 5, closeY - 8.66)
+              ..lineTo(closeX + 5, closeY - 8.66);
+          }
+
+          if (openX < size.width) {
+            path2
+              ..moveTo(openX, openY)
+              ..lineTo(openX - 5, openY + 8.66)
+              ..lineTo(openX + 5, openY + 8.66);
+          }
 
           context.canvas.drawPath(
               path2,
@@ -145,13 +160,21 @@ class MainWindowTradingLogRenderObject extends RenderBox {
                 ..color = Colors.white
                 ..style = PaintingStyle.fill);
         } else {
-          Path path2 = Path()
-            ..moveTo(closeX, closeY)
-            ..lineTo(closeX - 5, closeY + 8.66)
-            ..lineTo(closeX + 5, closeY + 8.66)
-            ..moveTo(openX, openY)
-            ..lineTo(openX - 5, openY - 8.66)
-            ..lineTo(openX + 5, openY - 8.66);
+          Path path2 = Path();
+
+          if (closeX < size.width) {
+            path2
+              ..moveTo(closeX, closeY)
+              ..lineTo(closeX - 5, closeY + 8.66)
+              ..lineTo(closeX + 5, closeY + 8.66);
+          }
+
+          if (openX < size.width) {
+            path2
+              ..moveTo(openX, openY)
+              ..lineTo(openX - 5, openY - 8.66)
+              ..lineTo(openX + 5, openY - 8.66);
+          }
 
           context.canvas.drawPath(
               path2,
@@ -159,10 +182,7 @@ class MainWindowTradingLogRenderObject extends RenderBox {
                 ..color = Colors.white
                 ..style = PaintingStyle.fill);
         }
-
-
       }
-
     });
 
     context.canvas.save();
